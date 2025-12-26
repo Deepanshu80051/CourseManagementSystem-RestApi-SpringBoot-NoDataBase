@@ -1,0 +1,108 @@
+package com.example.course;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/couses")
+public class CourseController {
+	
+	private List<Course> list = new ArrayList<>();
+	
+	// post
+	@PostMapping
+	public String adddata(@RequestBody Course cc) {
+		list.add(cc);
+		return "data added";
+	}
+	
+	// get all data
+	
+	@GetMapping
+	public List<Course> getdata(){
+		return list;
+	}
+	
+	
+	// get data by id
+	@GetMapping("/{id}")
+	public Course getdataById(@PathVariable int id) {
+		for(Course c : list) {
+			if(c.getCourse_id() == id) {
+				return c;
+			}
+		}
+		return null;
+		
+	}
+	
+	
+	// put by id
+	
+	@PutMapping("/{id}")
+	
+	public String updatedata(@PathVariable int id, @RequestBody Course cc ) {
+		for(Course c : list) {
+			if(c.getCourse_id() == id) {
+				c.setTrainer_name(cc.getTrainer_name());
+				c.setDuration(cc.getDuration());
+				c.setFees(cc.getFees());
+				return "data updated";
+			}
+		}
+		return null;
+	}
+	
+	
+	// delete id
+	
+	@DeleteMapping("/{id}")
+	
+	public String deletedata(@PathVariable int id) {
+		Course found = null;
+		
+		for(Course c : list) {
+			if(c.getCourse_id()==id) {
+				found = c;
+				break;
+			}
+		}
+		
+		if(found != null) {
+			list.remove(found);
+			return "deleted";
+		}
+		
+		return "not deleted";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+}
